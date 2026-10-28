@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CHARAK — Admin Panel</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- Mobile sidebar toggle -->
+<button class="mob-menu-btn" id="mobMenuBtn" aria-label="Toggle menu">☰</button>
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-logo">
+    <img src="charak_logo.png" alt="Charak Ayurveda" style="width:44px; height:44px; object-fit:contain; border-radius:50%; background:white; padding:1px; border:2px solid var(--gold, #cba237); box-shadow:0 2px 8px rgba(0,0,0,0.15);" />
+    <div class="sidebar-logo-text">
+      <strong>Charak</strong>
+      <small style="color:#f2d88c; letter-spacing:0.18em">AYURVEDA ADMIN</small>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Overview</div>
+    <a class="sidebar-link active" data-panel="dashboard">
+      <span class="link-icon">📊</span> Dashboard
+    </a>
+
+    <div class="sidebar-section-label">Site Settings</div>
+    <a class="sidebar-link" data-panel="general">
+      <span class="link-icon">⚙️</span> General Info
+    </a>
+    <a class="sidebar-link" data-panel="whatsapp">
+      <span class="link-icon">💬</span> WhatsApp
+    </a>
+    <a class="sidebar-link" data-panel="contact">
+      <span class="link-icon">📞</span> Contact & Social
+    </a>
+    <a class="sidebar-link" data-panel="hero">
+      <span class="link-icon">🏠</span> Hero Section
+    </a>
+
+    <div class="sidebar-section-label">Content</div>
+    <a class="sidebar-link" data-panel="products">
+      <span class="link-icon">🌿</span> Products
+    </a>
+    <a class="sidebar-link" data-panel="medicines">
+      <span class="link-icon">💊</span> Medicines
+    </a>
+    <a class="sidebar-link" data-panel="therapies">
+      <span class="link-icon">✨</span> Therapies
+    </a>
+    <a class="sidebar-link" data-panel="yoga">
+      <span class="link-icon">🧘</span> Yoga Programs
+    </a>
+    <a class="sidebar-link" data-panel="hospital">
+      <span class="link-icon">🏥</span> Hospital
+    </a>
+    <a class="sidebar-link" data-panel="experts">
+      <span class="link-icon">👨‍⚕️</span> Experts / Doctors
+    </a>
+    <a class="sidebar-link" data-panel="about">
+      <span class="link-icon">🫀</span> About Section
+    </a>
+    <a class="sidebar-link" data-panel="testimonials">
+      <span class="link-icon">⭐</span> Testimonials
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="index.html" target="_blank">🔗 View Website</a>
+    <a href="#" id="sidebarExportLive" style="color:#d4af37; font-weight:600">🚀 Export Live data.js</a>
+    <a href="#" id="sidebarExport">📤 Export Config JSON</a>
+    <a href="#" id="sidebarImport">📥 Import Config JSON</a>
+    <input type="file" id="importFileInput" accept=".json" style="display:none"/>
+    <a href="#" id="sidebarReset" style="color:#e08080">🔄 Reset to Defaults</a>
+  </div>
+</aside>
+
+<!-- ─── MAIN ─── -->
+<main class="admin-main">
+  <div class="admin-topbar">
+    <h1 id="topbarTitle">Dashboard</h1>
+    <div class="topbar-actions">
+      <button class="btn btn-outline" id="publishLiveBtn" style="border-color:#d4af37; color:#d4af37; font-weight:600" title="Download production data.js ready for uploading to live hosting">🚀 Export Live data.js</button>
+      <button class="btn btn-success" id="saveAllBtn">💾 Save All Changes</button>
+      <a href="index.html" target="_blank" class="btn btn-outline">👁 Preview Site</a>
+    </div>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card-icon">🌿</div>
+          <div class="stat-card-num" id="dash-products">6</div>
+          <div class="stat-card-label">Products Listed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">💊</div>
+          <div class="stat-card-num" id="dash-medicines">6</div>
+          <div class="stat-card-label">Medicines Listed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">👨‍⚕️</div>
+          <div class="stat-card-num" id="dash-experts">3</div>
+          <div class="stat-card-label">Expert Doctors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">⭐</div>
+          <div class="stat-card-num" id="dash-reviews">4</div>
+          <div class="stat-card-label">Testimonials</div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-card-title">🚀 Quick Actions</div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.75rem">
+          <button class="btn btn-ghost" onclick="showPanel('products')">➕ Add Product</button>
+          <button class="btn btn-ghost" onclick="showPanel('medicines')">➕ Add Medicine</button>
+          <button class="btn btn-ghost" onclick="showPanel('experts')">➕ Add Doctor</button>
+          <button class="btn btn-ghost" onclick="showPanel('testimonials')">➕ Add Review</button>
+          <button class="btn btn-ghost" onclick="showPanel('whatsapp')">💬 WhatsApp Settings</button>
+          <button class="btn btn-ghost" onclick="showPanel('contact')">📞 Update Contact</button>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-card-title">ℹ️ How to Use This Admin Panel</div>
+        <div style="font-size:0.9rem; line-height:1.8; color:var(--text-muted)">
+          <p>🔹 <strong>Left sidebar</strong> से कोई भी section choose करें</p>
+          <p>🔹 Changes करने के बाद <strong>"Save All Changes"</strong> button दबाएं</p>
+          <p>🔹 Changes automatically browser में save होते हैं (localStorage)</p>
+          <p>🔹 <strong>Export Config</strong> से JSON file download करें (backup)</p>
+          <p>🔹 <strong>Import Config</strong> से JSON file upload करके restore करें</p>
+          <p>🔹 <strong>View Website</strong> से live website देखें</p>
+          <p>🔸 Images को base64 format में convert करके store किया जाता है</p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-card-title">📅 Last Saved</div>
+        <p id="lastSavedText" style="font-size:0.9rem; color:var(--text-muted)">Loading...</p>
+      </div>
+    </div>
+
+    <!-- ── GENERAL ── -->
+    <div class="panel" id="panel-general">
+      <div class="panel-card">
+        <div class="panel-card-title">⚙️ General Site Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="field-label">Site Name</label>
+            <input type="text" id="g-siteName" placeholder="CHARAK" />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Tagline</label>
+            <input type="text" id="g-tagline" placeholder="Holistic Wellness" />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Established / Badge Text</label>
+            <input type="text" id="g-established" placeholder="Est. 1987 · Ancient Ayurveda" />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Short Description</label>
+            <input type="text" id="g-description" placeholder="Ancient Wisdom. Modern Healing." />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Site Logo</label>
+          <div class="img-upload-area" id="logoUploadArea">
+            <input type="file" id="g-logoFile" accept="image/*" onchange="handleImgUpload(this,'g-logo','logoPreview')" />
+            <span class="img-upload-icon">🌿</span>
+            <div class="img-upload-text">Click to upload logo<br/><small>PNG, SVG, JPG (recommended: 200×200px)</small></div>
+            <img id="logoPreview" class="img-preview" alt="Logo preview" />
+          </div>
+          <input type="hidden" id="g-logo" />
+          <div class="field-hint">Logo upload करें (अभी SVG logo code में है)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WHATSAPP ── -->
+    <div class="panel" id="panel-whatsapp">
+      <div class="panel-card">
+        <div class="panel-card-title">💬 WhatsApp Button Settings</div>
+        <div class="form-group">
+          <label class="field-label">WhatsApp Enable/Disable</label>
+          <div class="toggle-wrap">
+            <label class="toggle">
+              <input type="checkbox" id="wa-enabled" onchange="toggleWAPreview()" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="wa-toggle-label">Enabled</span>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="field-label">WhatsApp Number</label>
+            <input type="tel" id="wa-number" placeholder="919876543210" />
+            <div class="field-hint">Country code + number (no + or spaces). Example: 919876543210</div>
+          </div>
+          <div class="form-group">
+            <label class="field-label">Button Position</label>
+            <select id="wa-position">
+              <option value="bottom-right">Bottom Right ↘</option>
+              <option value="bottom-left">Bottom Left ↙</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="field-label">Default Message (pre-filled)</label>
+            <textarea id="wa-message" rows="3" placeholder="Namaste! I would like to book a consultation..."></textarea>
+          </div>
+        </div>
+        <div class="panel-card" style="background:#f0fff4; border-color:#b8d4b8; margin-top:1rem">
+          <div style="font-size:0.88rem; color:var(--forest)">
+            <strong>📱 WhatsApp Link Preview:</strong><br/>
+            <code id="waLinkPreview" style="word-break:break-all; font-size:0.78rem; color:var(--text-muted); display:block; margin-top:0.5rem"></code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTACT ── -->
+    <div class="panel" id="panel-contact">
+      <div class="panel-card">
+        <div class="panel-card-title">📞 Contact Information</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="field-label">Address</label>
+            <input type="text" id="c-address" placeholder="CHARAK Wellness Centre, ..." />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Phone</label>
+            <input type="tel" id="c-phone" placeholder="+91 98765 43210" />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Email</label>
+            <input type="email" id="c-email" placeholder="consult@charak.in" />
+          </div>
+          <div class="form-group full">
+            <label class="field-label">Working Hours</label>
+            <input type="text" id="c-hours" placeholder="Mon – Sat: 9:00 AM – 7:00 PM" />
+          </div>
+        </div>
+      </div>
+      <div class="panel-card">
+        <div class="panel-card-title">🔗 Social Media Links</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="field-label">Facebook URL</label>
+            <input type="url" id="s-facebook" placeholder="https://facebook.com/..." />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Instagram URL</label>
+            <input type="url" id="s-instagram" placeholder="https://instagram.com/..." />
+          </div>
+          <div class="form-group">
+            <label class="field-label">YouTube URL</label>
+            <input type="url" id="s-youtube" placeholder="https://youtube.com/..." />
+          </div>
+          <div class="form-group">
+            <label class="field-label">TikTok URL</label>
+            <input type="url" id="s-tiktok" placeholder="https://tiktok.com/@..." />
+          </div>
+          <div class="form-group full">
+            <label class="field-label">WhatsApp Direct Link</label>
+            <input type="url" id="s-whatsapp" placeholder="https://wa.me/92..." />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HERO ── -->
+    <div class="panel" id="panel-hero">
+      <div class="panel-card">
+        <div class="panel-card-title">🏠 Hero Section</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="field-label">Badge Text</label>
+            <input type="text" id="h-badge" placeholder="Est. 1987 · Ancient Ayurveda" />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Title Line 1</label>
+            <input type="text" id="h-title1" placeholder="Ancient Wisdom." />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Title Line 2 (italic, green)</label>
+            <input type="text" id="h-title2" placeholder="Modern Healing." />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Button 1 Text</label>
+            <input type="text" id="h-btn1text" placeholder="Explore Wellness" />
+          </div>
+          <div class="form-group">
+            <label class="field-label">Button 2 Text</label>
+            <input type="text" id="h-btn2text" placeholder="Book Consultation" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Subtitle / Description</label>
+          <textarea id="h-subtitle" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Hero Image</label>
+          <div class="img-upload-area">
+            <input type="file" id="h-heroFile" accept="image/*" onchange="handleImgUpload(this,'h-heroImg','heroImgPreview')" />
+            <span class="img-upload-icon">🖼️</span>
+            <div class="img-upload-text">Hero section की image upload करें</div>
+            <img id="heroImgPreview" class="img-preview" alt="Hero preview" />
+          </div>
+          <input type="hidden" id="h-heroImg" />
+        </div>
+      </div>
+      <div class="panel-card">
+        <div class="panel-card-title">📊 Stats (Counters)</div>
+        <div id="heroStatsContainer"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addHeroStat()">➕ Add Stat</button>
+      </div>
+    </div>
+
+    <!-- ── PRODUCTS ── -->
+    <div class="panel" id="panel-products">
+      <div class="panel-card">
+        <div class="panel-card-title">🌿 Product Showcase
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openProductModal()">➕ Add Product</button>
+        </div>
+        <div class="items-grid" id="productsGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── MEDICINES ── -->
+    <div class="panel" id="panel-medicines">
+      <div class="panel-card">
+        <div class="panel-card-title">💊 Medicines Section
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openMedModal()">➕ Add Medicine</button>
+        </div>
+        <div class="items-grid" id="medicinesGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── THERAPIES ── -->
+    <div class="panel" id="panel-therapies">
+      <div class="panel-card">
+        <div class="panel-card-title">✨ Natural Therapies & Panchakarma Management
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openTherapyModal()">➕ Add Therapy</button>
+        </div>
+        <div class="field-hint" style="margin-bottom:1rem">
+          Manage your hospital therapies, Panchakarma packages, multiple session photos, duration, and custom detail sections.
+        </div>
+        <div class="items-grid" id="therapiesAdminGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── YOGA ── -->
+    <div class="panel" id="panel-yoga">
+      <div class="panel-card">
+        <div class="panel-card-title">🧘 Yoga & Wellness Programs Management
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openYogaModal()">➕ Add Yoga Program</button>
+        </div>
+        <div class="form-group" style="margin-bottom:1.25rem">
+          <label class="field-label">Floating Badge Text (e.g. 🧘 Daily Sessions Available)</label>
+          <input type="text" id="yoga-badge" placeholder="🧘 Daily Sessions Available" onchange="autoSaveYogaBadge()" />
+        </div>
+        <div class="items-grid" id="yogaAdminGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── HOSPITAL ── -->
+    <div class="panel" id="panel-hospital">
+      <div class="panel-card">
+        <div class="panel-card-title">🏥 Hospital Facilities & Features
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openHospModal()">➕ Add Hospital Feature</button>
+        </div>
+        <div class="field-hint" style="margin-bottom:1rem">
+          Manage your hospital facility cards, research lab, IPD/OPD, photos, and specialized services.
+        </div>
+        <div class="items-grid" id="hospitalAdminGrid"></div>
+      </div>
+      <div class="panel-card">
+        <div class="panel-card-title">🩺 Conditions We Treat</div>
+        <div class="field-hint" style="margin-bottom:0.75rem">Comma se alag karke likhein (e.g. Arthritis, Diabetes, Hypertension, Liver Disorders...)</div>
+        <textarea id="hosp-conditions" rows="4" placeholder="Arthritis, Diabetes, Hypertension, Kidney Disorders, Skin Diseases, Digestive Issues, ..."></textarea>
+      </div>
+    </div>
+
+    <!-- ── EXPERTS ── -->
+    <div class="panel" id="panel-experts">
+      <div class="panel-card">
+        <div class="panel-card-title">👨‍⚕️ Expert Doctors / Team
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openExpertModal()">➕ Add Doctor</button>
+        </div>
+        <div class="items-grid" id="expertsGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── ABOUT ── -->
+    <div class="panel" id="panel-about">
+      <div class="panel-card">
+        <div class="panel-card-title">🫀 About Section Content</div>
+        <div class="form-group">
+          <label class="field-label">Section Title</label>
+          <input type="text" id="ab-title" placeholder="Healing the World the Natural Way" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Paragraph 1</label>
+          <textarea id="ab-desc1" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Paragraph 2</label>
+          <textarea id="ab-desc2" rows="3"></textarea>
+        </div>
+        <hr class="section-divider" />
+        <div class="panel-card-title">📦 Value Cards</div>
+        <div id="aboutValuesContainer"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addAboutValue()">➕ Add Value</button>
+      </div>
+    </div>
+
+    <!-- ── TESTIMONIALS ── -->
+    <div class="panel" id="panel-testimonials">
+      <div class="panel-card">
+        <div class="panel-card-title">⭐ Patient Testimonials
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="addTestimonial()">➕ Add Review</button>
+        </div>
+        <div id="testiContainer"></div>
+      </div>
+    </div>
+
+  </div><!-- /admin-content -->
+</main>
+
+<!-- ─── PRODUCT MODAL ─── -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="productModalTitle">Add Product</h3>
+      <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="prod-editId" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="field-label">Product Name</label>
+          <input type="text" id="prod-name" placeholder="Ashwagandha Complex" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Category</label>
+          <input type="text" id="prod-category" placeholder="Immunity · Adaptogen" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Description</label>
+          <textarea id="prod-desc" rows="2" placeholder="Product description..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Price (PKR)</label>
+          <input type="text" id="prod-price" placeholder="Rs. 450" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Badge</label>
+          <input type="text" id="prod-badge" placeholder="Bestseller / New / Premium" />
+          <div class="badge-select">
+            <span class="badge-opt none"       onclick="selectBadge('prod','')">None</span>
+            <span class="badge-opt badge-bestseller" onclick="selectBadge('prod','bestseller')">Bestseller</span>
+            <span class="badge-opt badge-new"  onclick="selectBadge('prod','new')">New</span>
+            <span class="badge-opt badge-premium" onclick="selectBadge('prod','premium')">Premium</span>
+          </div>
+          <input type="hidden" id="prod-badgeColor" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Product Photos (Upload Multiple Photos — 5+ supported)</label>
+          <div class="img-upload-area">
+            <input type="file" id="prod-multiImgFiles" accept="image/*" multiple onchange="handleMultiImgSelect(this, 'prod')" />
+            <span class="img-upload-icon">📸</span>
+            <div class="img-upload-text"><strong>Click to Upload Multiple Photos</strong> (1, 5, 10 or more images)</div>
+          </div>
+          <div id="prodGalleryThumbs" class="admin-gallery-strip"></div>
+          <input type="hidden" id="prod-img" />
+          <input type="hidden" id="prod-gallery-data" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Key Ingredients & Ayurvedic Benefits</label>
+          <textarea id="prod-ingredients" rows="2" placeholder="e.g. Pure Ashwagandha 500mg, Piperine for absorption, Plant cellulose capsules"></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">How to Use & Dosage Instructions</label>
+          <textarea id="prod-dosage" rows="2" placeholder="e.g. 1 capsule twice daily with warm water or milk after meals."></textarea>
+        </div>
+        <!-- Custom Program Sections -->
+        <div class="form-group full custom-sections-wrap">
+          <div class="custom-sections-header">
+            <div>
+              <label class="field-label" style="margin:0">Custom Program Sections (Diet, Phases, Guidelines, etc.)</label>
+              <small style="color:var(--text-muted); display:block; font-size:0.75rem">آپ اس پروگرام / پروڈکٹ کے لیے جتنے چاہیں کسٹم سیکشنز اور تفصیلات شامل کر سکتے ہیں</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline" onclick="addCustomSectionRow('prod')">➕ Add Section</button>
+          </div>
+          <div id="prodCustomSectionsContainer" class="custom-sections-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('productModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProduct()">💾 Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MEDICINE MODAL ─── -->
+<div class="modal-overlay" id="medicineModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="medModalTitle">Add Medicine</h3>
+      <button class="modal-close" onclick="closeModal('medicineModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="med-editId" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="field-label">Medicine Name</label>
+          <input type="text" id="med-name" placeholder="Ashwagandha Complex" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Category</label>
+          <input type="text" id="med-category" placeholder="Immunity" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Icon Emoji</label>
+          <input type="text" id="med-icon" placeholder="🌿" maxlength="4" style="font-size:1.5rem; text-align:center" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Price (PKR)</label>
+          <input type="text" id="med-price" placeholder="Rs. 450" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Description</label>
+          <textarea id="med-desc" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Bestseller?</label>
+          <div class="toggle-wrap">
+            <label class="toggle">
+              <input type="checkbox" id="med-featured" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Mark as Featured</span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Medicine Photos (Upload Multiple Photos — 5+ supported)</label>
+          <div class="img-upload-area">
+            <input type="file" id="med-multiImgFiles" accept="image/*" multiple onchange="handleMultiImgSelect(this, 'med')" />
+            <span class="img-upload-icon">📸</span>
+            <div class="img-upload-text"><strong>Click to Upload Multiple Photos</strong> (Jar, bottle, powder etc.)</div>
+          </div>
+          <div id="medGalleryThumbs" class="admin-gallery-strip"></div>
+          <input type="hidden" id="med-img" />
+          <input type="hidden" id="med-gallery-data" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Indications & Health Benefits</label>
+          <textarea id="med-benefits" rows="2" placeholder="e.g. Natural immunity enhancer, balances doshas, zero side effects"></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Dosage Instructions</label>
+          <textarea id="med-dosage" rows="2" placeholder="e.g. 1-2 tablets twice daily after meals with lukewarm water."></textarea>
+        </div>
+        <!-- Custom Medicine Sections -->
+        <div class="form-group full custom-sections-wrap">
+          <div class="custom-sections-header">
+            <div>
+              <label class="field-label" style="margin:0">Custom Information Sections</label>
+              <small style="color:var(--text-muted); display:block; font-size:0.75rem">آپ اس میڈیسن کے لیے مزید اضافی سیکشنز شامل کر سکتے ہیں</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline" onclick="addCustomSectionRow('med')">➕ Add Section</button>
+          </div>
+          <div id="medCustomSectionsContainer" class="custom-sections-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('medicineModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMedicine()">💾 Save Medicine</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── THERAPY MODAL ─── -->
+<div class="modal-overlay" id="therapyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="therapyModalTitle">Add Therapy</h3>
+      <button class="modal-close" onclick="closeModal('therapyModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="th-editId" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="field-label">Therapy Name</label>
+          <input type="text" id="th-name" placeholder="Panchakarma Detox / Abhyanga" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Category / Tag</label>
+          <input type="text" id="th-tag" placeholder="Signature / Restorative / Detox" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Session Duration</label>
+          <input type="text" id="th-duration" placeholder="e.g. 60 min session / 90 min" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Display Status</label>
+          <div style="display:flex; gap:1.5rem; align-items:center; margin-top:0.4rem">
+            <label style="display:inline-flex; align-items:center; gap:0.4rem; cursor:pointer">
+              <input type="checkbox" id="th-active" checked /> <span>Active / لائیو شو ہو</span>
+            </label>
+            <label style="display:inline-flex; align-items:center; gap:0.4rem; cursor:pointer">
+              <input type="checkbox" id="th-isFeatured" /> <span>Featured (بڑا کارڈ)</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Description</label>
+          <textarea id="th-desc" rows="2" placeholder="Therapy description and healing overview..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Therapy Photos (Upload Multiple Photos — 5+ supported)</label>
+          <div class="img-upload-area">
+            <input type="file" id="therapy-multiImgFiles" accept="image/*" multiple onchange="handleMultiImgSelect(this, 'therapy')" />
+            <span class="img-upload-icon">📸</span>
+            <div class="img-upload-text"><strong>Click to Upload Multiple Photos</strong> (Treatment room, oils, session)</div>
+          </div>
+          <div id="therapyGalleryThumbs" class="admin-gallery-strip"></div>
+          <input type="hidden" id="therapy-img" />
+          <input type="hidden" id="therapy-gallery-data" />
+        </div>
+        <!-- Custom Therapy Sections -->
+        <div class="form-group full custom-sections-wrap">
+          <div class="custom-sections-header">
+            <div>
+              <label class="field-label" style="margin:0">Custom Information Sections (فوائد، پروٹوکول، وغیرہ)</label>
+              <small style="color:var(--text-muted); display:block; font-size:0.75rem">آپ اس تھیراپی کے لیے جتنے چاہیں کسٹم سیکشنز بنا سکتے ہیں اور کسی بھی سیکشن کو آن یا آف کر سکتے ہیں</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline" onclick="addCustomSectionRow('therapyCustomSectionsContainer')">➕ Add Section</button>
+          </div>
+          <div id="therapyCustomSectionsContainer" class="custom-sections-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('therapyModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTherapy()">💾 Save Therapy</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── YOGA MODAL ─── -->
+<div class="modal-overlay" id="yogaModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="yogaModalTitle">Add Yoga Program</h3>
+      <button class="modal-close" onclick="closeModal('yogaModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="yoga-editId" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="field-label">Program Number / Code</label>
+          <input type="text" id="yoga-num" placeholder="01" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Program Name</label>
+          <input type="text" id="yoga-name" placeholder="Morning Sadhana / Therapeutic Yoga" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Schedule / Timings</label>
+          <input type="text" id="yoga-schedule" placeholder="Daily 6:00 AM - 7:30 AM" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Display Status</label>
+          <div style="margin-top:0.4rem">
+            <label style="display:inline-flex; align-items:center; gap:0.4rem; cursor:pointer">
+              <input type="checkbox" id="yoga-active" checked /> <span>Active / لائیو شو ہو</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Description</label>
+          <textarea id="yoga-desc" rows="2" placeholder="Program overview and benefits..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Yoga Photos (Upload Multiple Photos — 5+ supported)</label>
+          <div class="img-upload-area">
+            <input type="file" id="yoga-multiImgFiles" accept="image/*" multiple onchange="handleMultiImgSelect(this, 'yoga')" />
+            <span class="img-upload-icon">🧘</span>
+            <div class="img-upload-text"><strong>Click to Upload Multiple Photos</strong> (Studio, asanas, batches)</div>
+          </div>
+          <div id="yogaGalleryThumbs" class="admin-gallery-strip"></div>
+          <input type="hidden" id="yoga-img" />
+          <input type="hidden" id="yoga-gallery-data" />
+        </div>
+        <!-- Custom Yoga Sections -->
+        <div class="form-group full custom-sections-wrap">
+          <div class="custom-sections-header">
+            <div>
+              <label class="field-label" style="margin:0">Custom Information Sections (شامل چیزیں، ہدایات، وغیرہ)</label>
+              <small style="color:var(--text-muted); display:block; font-size:0.75rem">آپ اس یوگا پروگرام کے لیے اپنی مرضی کے سیکشنز اور تفصیلات ایڈ یا آف کر سکتے ہیں</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline" onclick="addCustomSectionRow('yogaCustomSectionsContainer')">➕ Add Section</button>
+          </div>
+          <div id="yogaCustomSectionsContainer" class="custom-sections-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('yogaModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveYogaProgram()">💾 Save Yoga Program</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HOSPITAL FEATURE MODAL ─── -->
+<div class="modal-overlay" id="hospitalModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="hospModalTitle">Add Hospital Facility</h3>
+      <button class="modal-close" onclick="closeModal('hospitalModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="hosp-editId" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="field-label">Icon Emoji</label>
+          <input type="text" id="hosp-icon" placeholder="🏥" maxlength="4" style="font-size:1.5rem; text-align:center" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Facility / Feature Name</label>
+          <input type="text" id="hosp-name" placeholder="100-Bed Facility" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Description</label>
+          <textarea id="hosp-desc" rows="2" placeholder="Facility description..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Display Status</label>
+          <div style="margin-top:0.4rem">
+            <label style="display:inline-flex; align-items:center; gap:0.4rem; cursor:pointer">
+              <input type="checkbox" id="hosp-active" checked /> <span>Active / لائیو شو ہو</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Facility Photos (Upload Multiple Photos)</label>
+          <div class="img-upload-area">
+            <input type="file" id="hosp-multiImgFiles" accept="image/*" multiple onchange="handleMultiImgSelect(this, 'hosp')" />
+            <span class="img-upload-icon">🏥</span>
+            <div class="img-upload-text"><strong>Click to Upload Facility Photos</strong> (Wards, garden, labs)</div>
+          </div>
+          <div id="hospGalleryThumbs" class="admin-gallery-strip"></div>
+          <input type="hidden" id="hosp-img" />
+          <input type="hidden" id="hosp-gallery-data" />
+        </div>
+        <!-- Custom Hospital Sections -->
+        <div class="form-group full custom-sections-wrap">
+          <div class="custom-sections-header">
+            <div>
+              <label class="field-label" style="margin:0">Custom Detail Sections (سہولیات، اوقات، ڈاکٹرز)</label>
+              <small style="color:var(--text-muted); display:block; font-size:0.75rem">آپ اس سہولت کے بارے میں مزید تفصیلات اور سیکشنز ایڈ کر سکتے ہیں</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline" onclick="addCustomSectionRow('hospCustomSectionsContainer')">➕ Add Section</button>
+          </div>
+          <div id="hospCustomSectionsContainer" class="custom-sections-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('hospitalModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveHospFeature()">💾 Save Facility</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── EXPERT MODAL ─── -->
+<div class="modal-overlay" id="expertModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="expertModalTitle">Add Doctor / Expert</h3>
+      <button class="modal-close" onclick="closeModal('expertModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="exp-editId" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="field-label">Doctor Name</label>
+          <input type="text" id="exp-name" placeholder="Dr. Rajesh Sharma" />
+        </div>
+        <div class="form-group">
+          <label class="field-label">Badge / Title</label>
+          <input type="text" id="exp-badge" placeholder="Chief Physician" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Specialization</label>
+          <input type="text" id="exp-spec" placeholder="Ayurveda & Panchakarma" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Bio</label>
+          <textarea id="exp-bio" rows="2" placeholder="25+ years in classical Ayurveda..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Tags (Enter दबाएं)</label>
+          <div class="tags-wrap" id="expTagsWrap">
+            <input type="text" class="tag-input" id="expTagInput" placeholder="e.g. Panchakarma" onkeydown="handleTagInput(event,'expTagsWrap','exp-tags')" />
+          </div>
+          <input type="hidden" id="exp-tags" />
+        </div>
+        <div class="form-group full">
+          <label class="field-label">Doctor Photo</label>
+          <div class="img-upload-area">
+            <input type="file" id="exp-imgFile" accept="image/*" onchange="handleImgUpload(this,'exp-img','expImgPreview')" />
+            <span class="img-upload-icon">👤</span>
+            <div class="img-upload-text">Doctor की photo upload करें</div>
+            <img id="expImgPreview" class="img-preview" alt="Doctor preview" />
+          </div>
+          <input type="hidden" id="exp-img" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('expertModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveExpert()">💾 Save Doctor</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST CONTAINER ─── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="data.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
